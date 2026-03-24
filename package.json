@@ -1,7 +1,7 @@
 {
 	"name": "n8n-nodes-docx2md2html",
 	"version": "0.1.0",
-	"description": "",
+	"description": "n8n community node to convert between DOCX, Markdown, and HTML formats",
 	"license": "MIT",
 	"homepage": "",
 	"keywords": [
@@ -13,7 +13,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/boazlai/n8n-nodes-docx2md.git"
+		"url": "https://github.com/boazlai/n8n-nodes-docx2md/html.git"
 	},
 	"scripts": {
 		"build": "n8n-node build",
@@ -29,7 +29,6 @@
 	],
 	"n8n": {
 		"n8nNodesApiVersion": 1,
-		"strict": true,
 		"credentials": [],
 		"nodes": [
 			"dist/nodes/Docx2Md/Docx2Md.node.js"

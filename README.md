@@ -1,14 +1,11 @@
 # n8n-nodes-docx2md
 
-This is an n8n community node. It lets you use _app/service name_ in your n8n workflows.
-
-_App/service name_ is _one or two sentences describing the service this node integrates with_.
+An n8n community node for converting between **DOCX**, **Markdown**, and **HTML** formats — in both directions.
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/sustainable-use-license/) workflow automation platform.
 
 [Installation](#installation)
 [Operations](#operations)
-[Credentials](#credentials)
 [Compatibility](#compatibility)
 [Usage](#usage)
 [Resources](#resources)
@@ -18,29 +15,100 @@ _App/service name_ is _one or two sentences describing the service this node int
 
 Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
 
+> **Note:** This node uses external npm dependencies (`mammoth`, `marked`, `html-to-docx`) and therefore runs on **self-hosted n8n only**. It is not compatible with n8n Cloud.
+
 ## Operations
 
-_List the operations supported by your node._
+| Operation           | Input                                                   | Output                                                  |
+| ------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| **DOCX → Markdown** | Binary DOCX file                                        | Markdown text (JSON field) + optional binary `.md` file |
+| **DOCX → HTML**     | Binary DOCX file                                        | HTML text (JSON field) + optional binary `.html` file   |
+| **Markdown → DOCX** | Markdown text (typed, JSON field, or binary `.md` file) | Binary DOCX file                                        |
+| **HTML → DOCX**     | HTML text (typed, JSON field, or binary `.html` file)   | Binary DOCX file                                        |
 
-## Credentials
+### DOCX → Markdown
 
-_If users need to authenticate with the app/service, provide details here. You should include prerequisites (such as signing up with the service), available authentication methods, and how to set them up._
+Converts a DOCX binary file to Markdown text using [mammoth](https://github.com/mwilliamson/mammoth.js).
+
+| Parameter                    | Description                                                                                                            |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Input Binary Field           | Name of the binary field holding the DOCX file (default: `data`)                                                       |
+| Output JSON Field            | JSON property name to store the Markdown string (default: `markdown`)                                                  |
+| Extract Images               | When enabled, extracts embedded images; the output field becomes `{ markdown, images }` with `![](image_1)` references |
+| Output Binary .md File       | Also attach the Markdown as a binary `.md` file                                                                        |
+| Output Markdown Binary Field | Binary field name for the output `.md` file (default: `markdown`)                                                      |
+
+### DOCX → HTML
+
+Converts a DOCX binary file to HTML using [mammoth](https://github.com/mwilliamson/mammoth.js).
+
+| Parameter                | Description                                                                                                 |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Input Binary Field       | Name of the binary field holding the DOCX file (default: `data`)                                            |
+| Output JSON Field        | JSON property name to store the HTML string (default: `html`)                                               |
+| Extract Images           | When enabled, extracts embedded images; the output field becomes `{ html, images }` with `image_1` src keys |
+| Output Binary .html File | Also attach the HTML as a binary `.html` file                                                               |
+| Output HTML Binary Field | Binary field name for the output `.html` file (default: `html`)                                             |
+
+### Markdown → DOCX
+
+Converts Markdown text to a DOCX file using [marked](https://marked.js.org/) + [html-to-docx](https://github.com/privateOmega/html-to-docx).
+
+| Parameter                                           | Description                                                                                 |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Markdown Source                                     | Where to read Markdown from: `Enter Markdown` (editor), `JSON Text Field`, or `Binary File` |
+| Markdown / Markdown Field Name / Input Binary Field | Depends on the chosen source                                                                |
+| Output DOCX Binary Field                            | Binary field name for the generated DOCX file (default: `data`)                             |
+| Output File Name                                    | File name for the DOCX (default: `output.docx`)                                             |
+
+### HTML → DOCX
+
+Converts HTML text to a DOCX file using [html-to-docx](https://github.com/privateOmega/html-to-docx).
+
+| Parameter                                   | Description                                                                         |
+| ------------------------------------------- | ----------------------------------------------------------------------------------- |
+| HTML Source                                 | Where to read HTML from: `Enter HTML` (editor), `JSON Text Field`, or `Binary File` |
+| HTML / HTML Field Name / Input Binary Field | Depends on the chosen source                                                        |
+| Output DOCX Binary Field                    | Binary field name for the generated DOCX file (default: `data`)                     |
+| Output File Name                            | File name for the DOCX (default: `output.docx`)                                     |
 
 ## Compatibility
 
-_State the minimum n8n version, as well as which versions you test against. You can also include any known version incompatibility issues._
+- Requires **self-hosted n8n** (not compatible with n8n Cloud due to external dependencies)
+- Tested with n8n v1.x
 
 ## Usage
 
-_This is an optional section. Use it to help users with any difficult or confusing aspects of the node._
+**Convert a DOCX attachment to Markdown:**
 
-_By the time users are looking for community nodes, they probably already know n8n basics. But if you expect new users, you can link to the [Try it out](https://docs.n8n.io/try-it-out/) documentation to help them get started._
+1. Add a trigger that receives a DOCX file (e.g. Email trigger or HTTP webhook)
+2. Add the **DOCX ↔ Markdown ↔ HTML** node
+3. Set Operation to `DOCX → Markdown`
+4. Set Input Binary Field to the binary field name holding the DOCX
+5. The output item will contain a `markdown` JSON field with the converted text
+
+**Generate a DOCX from Markdown:**
+
+1. Provide Markdown text via any upstream node
+2. Add the **DOCX ↔ Markdown ↔ HTML** node
+3. Set Operation to `Markdown → DOCX`
+4. Set Markdown Source to `JSON Text Field` and enter the field name
+5. The output item will contain a binary DOCX file in the configured output field
 
 ## Resources
 
-* [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
-* _Link to app/service documentation._
+- [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
+- [mammoth.js – DOCX to HTML/Markdown](https://github.com/mwilliamson/mammoth.js)
+- [marked – Markdown parser](https://marked.js.org/)
+- [html-to-docx – HTML to DOCX converter](https://github.com/privateOmega/html-to-docx)
 
 ## Version history
 
-_This is another optional section. If your node has multiple versions, include a short description of available versions and what changed, as well as any compatibility impact._
+### 0.1.0
+
+Initial release. Supports four operations:
+
+- DOCX → Markdown
+- DOCX → HTML
+- Markdown → DOCX
+- HTML → DOCX

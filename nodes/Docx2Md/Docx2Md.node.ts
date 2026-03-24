@@ -61,7 +61,7 @@ export class Docx2Md implements INodeType {
 						name: 'Markdown → DOCX',
 						value: 'markdownToDocx',
 						description: 'Convert Markdown text to a DOCX binary file',
-						action: 'Convert Markdown to DOCX file',
+						action: 'Convert markdown to docx file',
 					},
 				],
 				default: 'docxToMarkdown',
@@ -96,7 +96,7 @@ export class Docx2Md implements INodeType {
 					'Whether to extract embedded images from the DOCX. When enabled the output JSON field becomes an object with "markdown" and "images" keys; image references in the markdown use ![](image_1) syntax.',
 			},
 			{
-				displayName: 'Output Binary .md File',
+				displayName: 'Output Binary .Md File',
 				name: 'outputBinaryFile',
 				type: 'boolean',
 				default: false,
@@ -220,7 +220,7 @@ export class Docx2Md implements INodeType {
 					'Whether to extract embedded images from the DOCX. When enabled the output JSON field becomes an object with "html" and "images" keys; image src attributes use image_1 keys instead of inline base64.',
 			},
 			{
-				displayName: 'Output Binary .html File',
+				displayName: 'Output Binary .Html File',
 				name: 'outputHtmlBinaryFile',
 				type: 'boolean',
 				default: false,
