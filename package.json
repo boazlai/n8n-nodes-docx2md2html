@@ -1,0 +1,53 @@
+{
+	"name": "n8n-nodes-docx2md2html",
+	"version": "0.1.0",
+	"description": "",
+	"license": "MIT",
+	"homepage": "",
+	"keywords": [
+		"n8n-community-node-package"
+	],
+	"author": {
+		"name": "boazlai",
+		"email": "game94049@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/boazlai/n8n-nodes-docx2md.git"
+	},
+	"scripts": {
+		"build": "n8n-node build",
+		"build:watch": "n8n-node build --watch",
+		"dev": "n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"release": "n8n-node release",
+		"prepublishOnly": "n8n-node prerelease"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": [],
+		"nodes": [
+			"dist/nodes/Docx2Md/Docx2Md.node.js"
+		]
+	},
+	"dependencies": {
+		"html-to-docx": "^1.7.1",
+		"mammoth": "^1.8.0",
+		"marked": "^13.0.0"
+	},
+	"devDependencies": {
+		"@n8n/node-cli": "*",
+		"eslint": "9.32.0",
+		"prettier": "3.6.2",
+		"release-it": "^19.0.4",
+		"typescript": "5.9.2"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}

@@ -1,0 +1,25 @@
+services:
+  n8n:
+    build: .
+    image: n8n-nodes-docx2md:dev
+    ports:
+      - '5678:5678'
+    volumes:
+      - n8n_data:/home/node/.n8n
+    environment:
+      - N8N_CUSTOM_EXTENSIONS=/custom-nodes
+      - GENERIC_TIMEZONE=UTC
+      - TZ=UTC
+      # Disable basic auth for local dev — remove these two lines in production
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_USER_MANAGEMENT_DISABLED=true
+    restart: unless-stopped
+    develop:
+      watch:
+        # When dist/ changes on host, sync into container and restart n8n
+        - action: sync+restart
+          path: ./dist
+          target: /custom-nodes/n8n-nodes-docx2md/dist
+
+volumes:
+  n8n_data:
